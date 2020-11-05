@@ -1,0 +1,19 @@
+{
+  "name": "bagrinsergiu/brizy-merge-page-assets",
+  "description": "Merge page assets compiled by Brizy compiler",
+  "keywords": ["brizy", "brizy merge assets"],
+  "type": "library",
+  "require": {
+    "php": ">=5.4.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "BrizyMerge\\": "lib/",
+      "BrizyMergeTests\\": "tests/"
+    }
+  }
+}

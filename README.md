@@ -1,0 +1,1 @@
+# Brizy page asset merger
