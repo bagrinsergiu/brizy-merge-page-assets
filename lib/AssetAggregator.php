@@ -141,7 +141,7 @@ class AssetAggregator
             $assets[] = $mainAsset;
         }
 
-        return $assets;
+        return $this->sortAssets($assets);
     }
 
     private function normalizeAssets($assets, $freeLibMap, $proLibMap)
