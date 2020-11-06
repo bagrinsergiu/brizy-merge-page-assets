@@ -217,9 +217,9 @@ class AssetAggregator
         return $this->groupFonts(
             $assets,
             self::FONT_TYPE_GOOGLE,
-            "/\?family=(.*?)&|\"/",
-            function ($value) {
-                return "?family={$value}\"";
+            "/\?family=(.*?)(&|\")/",
+            function ($value,$matchTermination) {
+                return "?family={$value}{$matchTermination}";
             }
         );
     }
@@ -231,7 +231,7 @@ class AssetAggregator
             self::FONT_TYPE_UPLOADED,
             "/\?-font=(.*?)\"/",
             function ($value) {
-                return "-font={$value}\"";
+                return "-font={$value}";
             }
         );
     }
@@ -241,6 +241,7 @@ class AssetAggregator
         // extract google fonts
         $fonts      = [];
         $sampleFont = null;
+        $matchTermination = "";
         foreach ($assets as $i => $asset) {
             /**
              * @var AssetFont $asset ;
@@ -270,6 +271,11 @@ class AssetAggregator
                 }
 
                 unset($assets[$i]);
+
+                if(isset($matches[2]))
+                {
+                    $matchTermination = $matches[2];
+                }
             }
         }
 
@@ -284,7 +290,7 @@ class AssetAggregator
         }
         $fontQueryValue = implode('|', $f);
 
-        $replaceValue = $replaceRegex($fontQueryValue);
+        $replaceValue = $replaceRegex($fontQueryValue, $matchTermination);
 
         $sampleFont->setContent(
             preg_replace($extractRegex, $replaceValue, $sampleFont->getContent())
