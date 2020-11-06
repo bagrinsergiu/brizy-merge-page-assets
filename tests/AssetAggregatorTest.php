@@ -14,15 +14,13 @@ class AssetAggregatorTest extends TestCase
         $page2 = json_decode(file_get_contents("./tests/data/page2.json"), true);
 
         $assets   = [];
-        $assets[] = AssetGroup::instanceFromJsonData($page->blocks->freeStyles);
-        $assets[] = AssetGroup::instanceFromJsonData($page->blocks->proStyles);
-        $assets[] = AssetGroup::instanceFromJsonData($page2->blocks->freeStyles);
+        $assets[] = AssetGroup::instanceFromJsonData($page['blocks']['freeStyles']);
+        $assets[] = AssetGroup::instanceFromJsonData($page['blocks']['proStyles']);
+        $assets[] = AssetGroup::instanceFromJsonData($page2['blocks']['freeStyles']);
 
         $aggregator = new AssetAggregator($assets);
 
         $list = $aggregator->getAssetList();
-
-        var_dump($list);
     }
 
 }
