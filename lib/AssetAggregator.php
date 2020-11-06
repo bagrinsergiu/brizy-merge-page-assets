@@ -55,7 +55,8 @@ class AssetAggregator
         $assets = $this->getAggregatedAssets($this->groups);
 
         list($freeLibMap, $proLibMap) = $this->getLibMaps($this->groups);
-        $assets2 = $this->normalizeAssets($assets, $freeLibMap, $proLibMap);
+
+        return $this->normalizeAssets($assets, $freeLibMap, $proLibMap);
     }
 
     private function getLibMaps($groups)

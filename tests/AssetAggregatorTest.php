@@ -20,7 +20,9 @@ class AssetAggregatorTest extends TestCase
 
         $aggregator = new AssetAggregator($assets);
 
-        $aggregator->getAssetList();
+        $list = $aggregator->getAssetList();
+
+        var_dump($list);
     }
 
 }
