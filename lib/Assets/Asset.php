@@ -42,7 +42,7 @@ class Asset
                 throw new \Exception('Missing Asset field: '.json_encode($keyDiff));
         }
 
-        return new self($data->name, $data->score, $data->content, $data->pro);
+        return new self($data['name'], $data['score'], $data['content'], $data['pro']);
     }
 
     /**

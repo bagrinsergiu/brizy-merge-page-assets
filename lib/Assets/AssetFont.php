@@ -28,7 +28,7 @@ class AssetFont extends Asset
         }
 
 
-        return new self($data->name, $data->score, $data->content, $data->pro, $data->type);
+        return new self($data['name'], $data['score'], $data['content'], $data['pro'], $data['type']);
     }
 
     /**

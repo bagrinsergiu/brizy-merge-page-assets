@@ -27,7 +27,7 @@ class AssetLib extends Asset
             throw new \Exception('Missing AssetLib field: '.json_encode($keyDiff));
         }
 
-        return new self($data->name, $data->score, $data->content, $data->pro, $data->selectors);
+        return new self($data['name'], $data['score'], $data['content'], $data['pro'], $data['selectors']);
     }
 
     /**

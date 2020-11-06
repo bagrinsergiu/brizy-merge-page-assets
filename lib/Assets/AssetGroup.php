@@ -53,38 +53,38 @@ class AssetGroup
         }
 
         // create main assets
-        $main = Asset::instanceFromJsonData($data->main);
+        $main = Asset::instanceFromJsonData($data['main']);
 
         // create generic assets
         $generic = [];
-        foreach ($data->generic as $entry) {
+        foreach ($data['generic'] as $entry) {
             $generic[] = Asset::instanceFromJsonData($entry);
         }
 
         // create libsMap assets
         $libsMap = [];
-        foreach ($data->libsMap as $entry) {
+        foreach ($data['libsMap'] as $entry) {
             $libsMap[] = AssetLib::instanceFromJsonData($entry);
         }
 
         // create libsSelectors assets
         $libsSelectors = [];
-        foreach ($data->libsSelectors as $entry) {
+        foreach ($data['libsSelectors'] as $entry) {
             $libsSelectors[] = (string)$entry;
         }
 
         // create pageFonts assets
         $pageFonts = [];
-        if (isset($data->pageFonts)) {
-            foreach ($data->pageFonts as $entry) {
+        if (isset($data['pageFonts'])) {
+            foreach ($data['pageFonts'] as $entry) {
                 $pageFonts[] = AssetFont::instanceFromJsonData($entry);
             }
         }
 
         // create pageStyles assets
         $pageStyles = [];
-        if (isset($data->pageStyles)) {
-            foreach ($data->pageStyles as $entry) {
+        if (isset($data['pageStyles'])) {
+            foreach ($data['pageStyles'] as $entry) {
                 $pageStyles[] = Asset::instanceFromJsonData($entry);
             }
         }
