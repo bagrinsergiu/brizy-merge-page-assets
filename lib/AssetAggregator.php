@@ -301,11 +301,11 @@ class AssetAggregator
         usort(
             $assets,
             function ($as1, $as2) {
-                if ($as1['score'] == $as2['score']) {
+                if ($as1->getScore() == $as2->getScore()) {
                     return 0;
                 }
 
-                return ($as1['score'] < $as2['score']) ? -1 : 1;
+                return ($as1->getScore() < $as2->getScore()) ? -1 : 1;
             }
         );
 
