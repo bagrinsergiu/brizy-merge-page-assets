@@ -16,7 +16,7 @@ class AssetLib extends Asset
      */
     static function instanceFromJsonData($data)
     {
-        $assetKeys = array_keys(get_object_vars($data));
+        $assetKeys = array_keys($data);
 
         $allowedKeys = ['name', 'score', 'content', 'pro', 'selectors'];
         if (count($keyDiff = array_diff($assetKeys, $allowedKeys)) !== 0) {

@@ -10,8 +10,8 @@ class AssetAggregatorTest extends TestCase
 {
     public function testGetAssetList()
     {
-        $page = json_decode(file_get_contents("./tests/data/page.json"));
-        $page2 = json_decode(file_get_contents("./tests/data/page2.json"));
+        $page = json_decode(file_get_contents("./tests/data/page.json"), true);
+        $page2 = json_decode(file_get_contents("./tests/data/page2.json"), true);
 
         $assets   = [];
         $assets[] = AssetGroup::instanceFromJsonData($page->blocks->freeStyles);

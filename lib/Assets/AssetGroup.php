@@ -41,7 +41,7 @@ class AssetGroup
      */
     static function instanceFromJsonData($data)
     {
-        $assetKeys = array_keys(get_object_vars($data));
+        $assetKeys = array_keys($data);
 
         $allowedKeys = ['main', 'generic', 'libsMap', 'libsSelectors'];
         if ($keyDiff = array_diff($assetKeys, $allowedKeys)) {

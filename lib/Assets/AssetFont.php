@@ -16,7 +16,7 @@ class AssetFont extends Asset
      */
     static function instanceFromJsonData($data)
     {
-        $assetKeys = array_keys(get_object_vars($data));
+        $assetKeys = array_keys($data);
 
         $allowedKeys = ['name', 'score', 'content', 'pro', 'type'];
         if (count($keyDiff = array_diff($assetKeys, $allowedKeys)) !== 0) {
