@@ -217,7 +217,7 @@ class AssetAggregator
         return $this->groupFonts(
             $assets,
             self::FONT_TYPE_GOOGLE,
-            "/\?family=(.*?)\"/",
+            "/\?family=(.*?)&|\"/",
             function ($value) {
                 return "?family={$value}\"";
             }
