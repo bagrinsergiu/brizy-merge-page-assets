@@ -56,7 +56,9 @@ class AssetAggregator
 
         list($freeLibMap, $proLibMap) = $this->getLibMaps($this->groups);
 
-        return $this->normalizeAssets($assets, $freeLibMap, $proLibMap);
+        $assets = $this->normalizeAssets($assets, $freeLibMap, $proLibMap);
+
+        return $this->sortAssets($assets);
     }
 
     private function getLibMaps($groups)
@@ -141,7 +143,7 @@ class AssetAggregator
             $assets[] = $mainAsset;
         }
 
-        return $this->sortAssets($assets);
+        return $assets;
     }
 
     private function normalizeAssets($assets, $freeLibMap, $proLibMap)
@@ -307,7 +309,7 @@ class AssetAggregator
         usort(
             $assets,
             function ($as1, $as2) {
-                if ($as1->getScore() == $as2->getScore()) {
+                if ($as1->getScore() === $as2->getScore()) {
                     return 0;
                 }
 

@@ -21,6 +21,17 @@ class AssetAggregatorTest extends TestCase
         $aggregator = new AssetAggregator($assets);
 
         $list = $aggregator->getAssetList();
-    }
 
+        $score = 0;
+        foreach($list as $i=>$item) {
+            if($i==0) {
+                $score = $item->getScore();
+                continue;
+            }
+
+            $this->assertGreaterThanOrEqual($score,$item->getScore(),'The items are not sorted ascending');
+
+            $score = $item->getScore();
+        }
+    }
 }
