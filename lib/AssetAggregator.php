@@ -257,8 +257,8 @@ class AssetAggregator
                 $matches = [];
                 preg_match($extractRegex, $asset->getContent(), $matches);
 
-                if (isset($matches[1])) {
-                    $fontString = $matches[1];
+                if (isset($matches[1]) ) {
+                    $fontString = urldecode($matches[1]);
                     $fontSets   = explode('|', $fontString);
 
                     foreach ($fontSets as $set) {

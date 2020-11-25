@@ -22,9 +22,6 @@ class AssetAggregatorTest extends TestCase
 
         $list = $aggregator->getAssetList();
 
-        print_r($list);
-        exit;
-
         $score = 0;
         foreach($list as $i=>$item) {
             if($i==0) {
