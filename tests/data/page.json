@@ -142,14 +142,14 @@
           "name": "uploaded",
           "type": "uploaded-font",
           "score": 10,
-          "content": "<link class=\"brz-link brz-link-google\" type=\"text/css\" rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css?brizy-font=Borato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic\" />",
+          "content": "<link class=\"brz-link brz-link-uploaded\" type=\"text/css\" rel=\"stylesheet\" href=\"http://brizy.local/?brizy-font=Borato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic\" />",
           "pro": false
         },
         {
           "name": "uploaded",
           "type": "uploaded-font",
           "score": 10,
-          "content": "<link type=\"text/css\" rel=\"stylesheet\" href=\"https://broziy.io/?brizy-font=Beshito:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic\" />",
+          "content": "<link type=\"text/css\" rel=\"stylesheet\" href=\"http://brizy.local/?brizy-font=Beshito:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic\" />",
           "pro": false
         }
       ],

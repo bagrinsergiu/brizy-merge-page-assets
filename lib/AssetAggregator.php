@@ -228,10 +228,11 @@ class AssetAggregator
 
     private function groupUploadedFonts($assets)
     {
+        echo "\n================UPLOADED==================\n";
         return $this->groupFonts(
             $assets,
             self::FONT_TYPE_UPLOADED,
-            "/\?-font=(.*?)\"/",
+            "/-font=(.*?)(&|\")/",
             function ($value) {
                 return "-font={$value}";
             }
@@ -249,12 +250,14 @@ class AssetAggregator
              * @var AssetFont $asset ;
              */
             if ($asset instanceof AssetFont && $asset->getType() === $fontType) {
+
                 // obtain a font copy
                 if ( ! $sampleFont) {
                     $sampleFont = $asset;
                 }
                 $matches = [];
                 preg_match($extractRegex, $asset->getContent(), $matches);
+                print_r($asset->getContent());
 
                 if (isset($matches[1])) {
                     $fontString = $matches[1];
@@ -281,6 +284,7 @@ class AssetAggregator
             }
         }
 
+        print_r($fonts);
         // generate font query value
         if ( ! $sampleFont) {
             return $assets;
