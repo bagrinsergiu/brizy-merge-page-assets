@@ -289,6 +289,7 @@ class AssetAggregator
 
         $f = [];
         foreach ($fonts as $family => $weight) {
+            $weight = array_unique($weight);
             $f[] = $family.':'.implode(',', $weight);
         }
         $fontQueryValue = implode('|', $f);
