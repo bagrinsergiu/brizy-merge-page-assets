@@ -219,7 +219,7 @@ class AssetAggregator
         return $this->groupFonts(
             $assets,
             self::FONT_TYPE_GOOGLE,
-            "/-font=(.*?)\"/",
+            "/\?family=(.*?)(&|\")/",
             function ($value,$matchTermination) {
                 return "?family={$value}{$matchTermination}";
             }
@@ -232,8 +232,8 @@ class AssetAggregator
             $assets,
             self::FONT_TYPE_UPLOADED,
             "/-font=(.*?)(&|\")/",
-            function ($value) {
-                return "-font={$value}";
+            function ($value,$matchTermination) {
+                return "-font={$value}{$matchTermination}";
             }
         );
     }
