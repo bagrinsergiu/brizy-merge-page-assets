@@ -6,6 +6,10 @@ namespace BrizyMerge\Assets;
 
 class Asset
 {
+    const TYPE_INLINE = 'inline';
+    const TYPE_CODE = 'code';
+    const TYPE_FILE = 'file';
+
     /**
      * @var string
      */
@@ -19,7 +23,22 @@ class Asset
     /**
      * @var string
      */
+    protected $type;
+
+    /**
+     * @var string
+     */
     protected $content;
+
+    /**
+     * @var string
+     */
+    protected $url;
+
+    /**
+     * @var string[]
+     */
+    protected $attrs;
 
     /**
      * @var bool
@@ -35,14 +54,22 @@ class Asset
 
         $allowedKeys = ['name', 'score', 'content', 'pro'];
         if (count($keyDiff = array_diff($assetKeys, $allowedKeys)) !== 0) {
-            throw new \Exception('Invalid Asset fields provided: '.json_encode($keyDiff));
+            throw new \Exception('Invalid Asset fields provided: ' . json_encode($keyDiff));
         }
 
         if (count($keyDiff = array_diff($allowedKeys, $assetKeys)) !== 0) {
-            throw new \Exception('Missing Asset field: '.json_encode($keyDiff));
+            throw new \Exception('Missing Asset field: ' . json_encode($keyDiff));
         }
 
-        return new self($data['name'], $data['score'], $data['content'], $data['pro']);
+        return new self(
+            $data['name'],
+            $data['score'],
+            isset($data['content']['content']) ? $data['content']['content'] : null,
+            isset($data['content']['url']) ? $data['content']['url'] : null,
+            isset($data['content']['type']) ? $data['content']['type'] : null,
+            isset($data['content']['attr']) ? $data['content']['attr'] : [],
+            $data['pro']
+        );
     }
 
     /**
@@ -53,12 +80,15 @@ class Asset
      * @param string $content
      * @param false $pro
      */
-    public function __construct($name = '', $score = 0, $content = '', $pro = false)
+    public function __construct($name = '', $score = 0, $content = null, $url = '', $type = '', $attrs = [], $pro = false)
     {
-        $this->name    = $name;
-        $this->score   = (int)$score;
+        $this->name = $name;
+        $this->score = (int)$score;
+        $this->type = $type;
         $this->content = $content;
-        $this->pro     = $pro;
+        $this->url = $url;
+        $this->attrs = $attrs;
+        $this->pro = $pro;
     }
 
     /**
@@ -138,6 +168,60 @@ class Asset
     {
         $this->pro = $pro;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Asset
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     * @return Asset
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getAttrs()
+    {
+        return $this->attrs;
+    }
+
+    /**
+     * @param string[] $attrs
+     * @return Asset
+     */
+    public function setAttrs($attrs)
+    {
+        $this->attrs = $attrs;
         return $this;
     }
 }

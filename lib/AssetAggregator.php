@@ -248,14 +248,14 @@ class AssetAggregator
             /**
              * @var AssetFont $asset ;
              */
-            if ($asset instanceof AssetFont && $asset->getType() === $fontType) {
+            if ($asset instanceof AssetFont && $asset->getFontType() === $fontType) {
 
                 // obtain a font copy
                 if ( ! $sampleFont) {
                     $sampleFont = $asset;
                 }
                 $matches = [];
-                preg_match($extractRegex, $asset->getContent(), $matches);
+                preg_match($extractRegex, $asset->getContentByType(), $matches);
 
                 if (isset($matches[1]) ) {
                     $fontString = urldecode($matches[1]);
@@ -296,8 +296,8 @@ class AssetAggregator
 
         $replaceValue = $replaceRegex($fontQueryValue, $matchTermination);
 
-        $sampleFont->setContent(
-            preg_replace($extractRegex, $replaceValue, $sampleFont->getContent())
+        $sampleFont->setUrl(
+            preg_replace($extractRegex, $replaceValue, $sampleFont->getUrl())
         );
 
         $assets[] = $sampleFont;

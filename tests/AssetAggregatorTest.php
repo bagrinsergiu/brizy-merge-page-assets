@@ -10,7 +10,7 @@ class AssetAggregatorTest extends TestCase
 {
     public function testGetAssetList()
     {
-        $page = json_decode(file_get_contents("./tests/data/page.json"), true);
+         $page = json_decode(file_get_contents("./tests/data/page.json"), true);
         $page2 = json_decode(file_get_contents("./tests/data/page2.json"), true);
 
         $assets   = [];
@@ -21,9 +21,6 @@ class AssetAggregatorTest extends TestCase
         $aggregator = new AssetAggregator($assets);
 
         $list = $aggregator->getAssetList();
-
-        print_r($list);
-        exit;
 
         $score = 0;
         foreach($list as $i=>$item) {
