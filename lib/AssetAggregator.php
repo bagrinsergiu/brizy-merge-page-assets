@@ -231,7 +231,7 @@ class AssetAggregator
         return $this->groupFonts(
             $assets,
             self::FONT_TYPE_UPLOADED,
-            "/-font=(.*?)(&|\")/",
+            "/-font=(.*?)(&|\"|$)/",
             function ($value,$matchTermination) {
                 return "-font={$value}{$matchTermination}";
             }
