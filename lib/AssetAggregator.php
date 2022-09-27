@@ -41,7 +41,7 @@ class AssetAggregator
      */
     public function setAssetGroups($groups)
     {
-        $this->groups[] = $groups;
+        $this->groups = $groups;
     }
 
 
