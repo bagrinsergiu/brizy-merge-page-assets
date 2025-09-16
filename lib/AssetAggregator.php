@@ -93,24 +93,6 @@ class AssetAggregator
             isset($freeGroups[0])?$freeGroups[0]->getLibsMap():null,
             isset($proGroups[0])?$proGroups[0]->getLibsMap():null,
         ];
-
-
-        foreach ($groups as $group) {
-            /**
-             * @var AssetGroup $group ;
-             */
-            if ($group->getMain() && $group->getMain()->isPro()) {
-                $pro = $group->getLibsMap();
-            } else {
-                $free = $group->getLibsMap();
-            }
-
-            if ($pro && $free) {
-                return [$free, $pro];
-            }
-        }
-
-        return [$free, $pro];
     }
 
     private function getAggregatedAssets($groups)
