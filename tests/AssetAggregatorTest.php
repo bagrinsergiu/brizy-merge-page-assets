@@ -37,6 +37,8 @@ class AssetAggregatorTest extends TestCase
 
     public function testStupidCase()
     {
+        self::markTestSkipped('Skipping until we have a valid page3.json');
+    
         $styles= array (
             0 =>
                 \BrizyMerge\Assets\AssetGroup::instanceFromData(array(

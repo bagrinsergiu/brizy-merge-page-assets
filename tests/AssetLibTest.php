@@ -13,7 +13,12 @@ class AssetLibTest extends TestCase
         $data = [
             "name"      => "main",
             "score"     => 30,
-            "content"   => "content",
+            "content"   => [
+                "content" => "content",
+                "url"     => "url",
+                "type"    => "type",
+                "attr"    => ["attr1" => "val1", "attr2" => "val2"],
+            ],
             "pro"       => false,
             "selectors" => ['selector1', 'selector2'],
         ];
@@ -22,7 +27,7 @@ class AssetLibTest extends TestCase
 
         $this->assertEquals($data['name'], $asset->getName(), 'It should return the correct value for name');
         $this->assertEquals($data['score'], $asset->getScore(), 'It should return the correct value for score');
-        $this->assertEquals($data['content'], $asset->getContent(), 'It should return the correct value for content');
+        $this->assertEquals($data['content']['content'], $asset->getContent(), 'It should return the correct value for content');
         $this->assertEquals($data['pro'], $asset->isPro(), 'It should return the correct value for pro');
         $this->assertEquals(
             $data['selectors'],
