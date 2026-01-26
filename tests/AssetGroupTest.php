@@ -2,6 +2,7 @@
 
 namespace BrizyMergeTests;
 
+use BrizyMerge\AssetAggregator;
 use BrizyMerge\Assets\Asset;
 use BrizyMerge\Assets\AssetFont;
 use BrizyMerge\Assets\AssetGroup;
@@ -82,4 +83,29 @@ class AssetGroupTest extends TestCase
         $asset = Asset::instanceFromJsonData($data);
     }
 
+
+    public function test_instanceFromJsonHugeData()
+    {
+        $compiledData = file_get_contents("./tests/data/A.json");
+
+        $t = microtime(true);
+
+        $compiledData = new CompiledData($compiledData);
+
+        $assetAggregator1 = new AssetAggregator($compiledData->getScriptsAssetGroup());
+        $assetAggregator1->getAssetList();
+        echo "Execution time: " . (microtime(true) - $t) . " seconds;\n";
+
+        $t = microtime(true);
+        $assetAggregator2 = new AssetAggregator($compiledData->getStylesAssetGroup());
+        $assetAggregator2->getAssetList();
+
+        echo "Execution time: " . (microtime(true) - $t) . " seconds;";
+
+        $t = 0;
+
+    }
+
+
 }
+
