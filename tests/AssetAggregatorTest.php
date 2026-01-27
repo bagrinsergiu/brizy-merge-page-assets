@@ -36,6 +36,32 @@ class AssetAggregatorTest extends TestCase
             $score = $item->getScore();
         }
     }
+
+
+
+    public function test_instanceFromJsonHugeData()
+    {
+        $this->markTestSkipped('This test is with big client data');
+
+        $compiledData = file_get_contents("./tests/data/A.json");
+
+        $t = microtime(true);
+
+        $compiledData = new CompiledData($compiledData);
+
+        $assetAggregator1 = new AssetAggregator($compiledData->getScriptsAssetGroup());
+        $assetAggregator1->getAssetList();
+        echo "Execution time: " . (microtime(true) - $t) . " seconds;\n";
+
+        $t = microtime(true);
+        $assetAggregator2 = new AssetAggregator($compiledData->getStylesAssetGroup());
+        $assetAggregator2->getAssetList();
+
+        echo "Execution time: " . (microtime(true) - $t) . " seconds;";
+
+        $t = 0;
+
+    }
 }
 
 

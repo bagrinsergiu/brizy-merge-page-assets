@@ -63,46 +63,52 @@ class AssetAggregator
 
     private function getLibMaps($groups)
     {
-        $pro = null;
-        $free = null;
+        $maxFreeGroup = null;
+        $maxFreeVersion = null;
+        $maxProGroup = null;
+        $maxProVersion = null;
 
-        // split the libs in free and pro
-        // sort the groups by version
-        // chose the fre max version and pro max version
-
-        $freeGroups = array_filter($groups, function ($g) {
-            if ($g->getMain() && !$g->getMain()->isPro()) {
-                return $g;
+        // Single pass: find max version for each type
+        foreach ($groups as $g) {
+            $main = $g->getMain();
+            if (!$main) {
+                continue;
             }
-        });
-        $proGroups = array_filter($groups, function ($g) {
-            if ($g->getMain() && $g->getMain()->isPro()) {
-                return $g;
+
+            $version = $g->getVersion();
+
+            if ($main->isPro()) {
+                if ($maxProVersion === null || version_compare($version, $maxProVersion) > 0) {
+                    $maxProGroup = $g;
+                    $maxProVersion = $version;
+                }
+            } else {
+                if ($maxFreeVersion === null || version_compare($version, $maxFreeVersion) > 0) {
+                    $maxFreeGroup = $g;
+                    $maxFreeVersion = $version;
+                }
             }
-        });
-
-        usort($freeGroups, function ($a, $b) {
-            return version_compare($b->getVersion(), $a->getVersion());
-        });
-
-        usort($proGroups, function ($a, $b) {
-            return version_compare($b->getVersion(), $a->getVersion());
-        });
+        }
 
         return [
-            isset($freeGroups[0]) ? $freeGroups[0]->getLibsMap() : null,
-            isset($proGroups[0]) ? $proGroups[0]->getLibsMap() : null,
+            $maxFreeGroup ? $maxFreeGroup->getLibsMap() : null,
+            $maxProGroup ? $maxProGroup->getLibsMap() : null,
         ];
     }
 
+    /**
+     * @param AssetGroup[] $groups
+     * @return array
+     */
     private function getAggregatedAssets($groups)
     {
         $assets = [];
-        $mainAsset = null;
 
         foreach ($groups as $group) {
-
-            $assets[] = $group->getMain();
+            $main = $group->getMain();
+            if ($main !== null) {
+                $assets[] = $main;
+            }
 
             foreach ($group->getGeneric() as $asset) {
                 $assets[] = $asset;
@@ -118,30 +124,13 @@ class AssetAggregator
             $selectorsCount = count($selectors);
 
             if ($selectorsCount != 0) {
-                $selectedLib = array_reduce(
-                    $group->getLibsMap(),
-                    function ($lib, $alib) use ($selectors, $selectorsCount) {
-                        if ($lib) {
-                            return $lib;
-                        }
-
-                        return count(
-                            array_intersect($alib->getSelectors(), $selectors)
-                        ) == $selectorsCount ? $alib : null;
+                foreach ($group->getLibsMap() as $alib) {
+                    if (count(array_intersect($alib->getSelectors(), $selectors)) == $selectorsCount) {
+                        $assets[] = $alib;
+                        break;
                     }
-                );
-
-                if ($selectedLib) {
-                    $assets[] = $selectedLib;
                 }
             }
-
-            $assets = array_filter(
-                $assets,
-                function ($a) {
-                    return !is_null($a);
-                }
-            );
         }
 
         return $assets;
@@ -149,13 +138,14 @@ class AssetAggregator
 
     private function normalizeAssets($assets, $freeLibMap, $proLibMap)
     {
-        // remove duplicates
         $duplicateKeys = [];
-        $tmp = [];
+        $seen = [];
 
         foreach ($assets as $key => $val) {
-            if (!in_array($val, $tmp)) {
-                $tmp[] = $val;
+            $hash = serialize($val);
+
+            if (!isset($seen[$hash])) {
+                $seen[$hash] = true;
             } else {
                 $duplicateKeys[] = $key;
             }
@@ -172,14 +162,20 @@ class AssetAggregator
         $proLibsSelectorsFound = [];
 
         foreach ($assets as $key => $lib) {
-            if ($lib instanceof AssetLib && !$lib->isPro()) {
-                $freeLibsFoundKeys[] = $key;
-                $freeLibsSelectorsFound = array_merge($freeLibsSelectorsFound, $lib->getSelectors());
+            if (!($lib instanceof AssetLib)) {
+                continue;
             }
 
-            if ($lib instanceof AssetLib && $lib->isPro()) {
+            if ($lib->isPro()) {
                 $proLibsFoundKeys[] = $key;
-                $proLibsSelectorsFound = array_merge($proLibsSelectorsFound, $lib->getSelectors());
+                foreach ($lib->getSelectors() as $selector) {
+                    $proLibsSelectorsFound[$selector] = $selector;
+                }
+            } else {
+                $freeLibsFoundKeys[] = $key;
+                foreach ($lib->getSelectors() as $selector) {
+                    $freeLibsSelectorsFound[$selector] = $selector;
+                }
             }
         }
 
@@ -196,11 +192,11 @@ class AssetAggregator
     {
         if (count($foundLibPositions) != 0) {
             // try to find a lib containing all found selectors
-            $libsSelectorsFound = array_unique($selectorsFound);
-            $libsSelectorsFoundCount = count($libsSelectorsFound);
+            //$libsSelectorsFound = array_unique($selectorsFound);
+            $libsSelectorsFoundCount = count($selectorsFound);
 
             foreach ($libMap as $alib) {
-                if (count(array_intersect($alib->getSelectors(), $libsSelectorsFound)) == $libsSelectorsFoundCount) {
+                if (count(array_intersect($alib->getSelectors(), $selectorsFound)) == $libsSelectorsFoundCount) {
 
                     foreach ($foundLibPositions as $key) {
                         unset($assets[$key]);
@@ -307,19 +303,30 @@ class AssetAggregator
 
     private function sortAssets($assets)
     {
-        // sort asset list by score
-        usort(
-            $assets,
-            function ($as1, $as2) {
-                if ($as1->getScore() === $as2->getScore()) {
-                    return 0;
-                }
+        if (empty($assets)) {
+            return $assets;
+        }
 
-                return ($as1->getScore() < $as2->getScore()) ? -1 : 1;
+        // Group assets by score
+        $buckets = [];
+        foreach ($assets as $asset) {
+            $score = $asset->getScore();
+            if (!isset($buckets[$score])) {
+                $buckets[$score] = [];
             }
-        );
+            $buckets[$score][] = $asset;
+        }
 
-        return $assets;
+        // Sort bucket keys and flatten
+        ksort($buckets);
+        $sorted = [];
+        foreach ($buckets as $bucket) {
+            foreach ($bucket as $asset) {
+                $sorted[] = $asset;
+            }
+        }
+
+        return $sorted;
     }
 
 }
