@@ -63,13 +63,13 @@ class AssetGroup
         // create generic assets
         $generic = [];
         foreach ($data['generic'] as $entry) {
-            $generic[] = Asset::instanceFromJsonData($entry);
+            $generic[$entry['name']] = Asset::instanceFromJsonData($entry);
         }
 
         // create libsMap assets
         $libsMap = [];
         foreach ($data['libsMap'] as $entry) {
-            $libsMap[] = AssetLib::instanceFromJsonData($entry);
+            $libsMap[$entry['name']] = AssetLib::instanceFromJsonData($entry);
         }
 
         // create libsSelectors assets
@@ -82,7 +82,7 @@ class AssetGroup
         $pageFonts = [];
         if (isset($data['pageFonts'])) {
             foreach ($data['pageFonts'] as $entry) {
-                $pageFonts[] = AssetFont::instanceFromJsonData($entry);
+                $pageFonts[$entry['name']] = AssetFont::instanceFromJsonData($entry);
             }
         }
 
@@ -90,7 +90,7 @@ class AssetGroup
         $pageStyles = [];
         if (isset($data['pageStyles'])) {
             foreach ($data['pageStyles'] as $entry) {
-                $pageStyles[] = Asset::instanceFromJsonData($entry);
+                $pageStyles[$entry['name']] = Asset::instanceFromJsonData($entry);
             }
         }
 

@@ -107,17 +107,17 @@ class AssetAggregator
         foreach ($groups as $group) {
             $main = $group->getMain();
             if ($main !== null) {
-                $assets[] = $main;
+                $assets[$main->getName()] = $main;
             }
 
             foreach ($group->getGeneric() as $asset) {
-                $assets[] = $asset;
+                $assets[$asset->getName()] = $asset;
             }
             foreach ($group->getPageFonts() as $font) {
-                $assets[] = $font;
+                $assets[$font->getName()] = $font;
             }
             foreach ($group->getPageStyles() as $style) {
-                $assets[] = $style;
+                $assets[$style->getName()] = $style;
             }
 
             $selectors = $group->getLibsSelectors();
