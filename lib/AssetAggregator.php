@@ -114,7 +114,7 @@ class AssetAggregator
                 $assets[$asset->getName()] = $asset;
             }
             foreach ($group->getPageFonts() as $font) {
-                $assets[$font->getName()] = $font;
+                $assets[] = $font;
             }
             foreach ($group->getPageStyles() as $style) {
                 $assets[$style->getName()] = $style;
