@@ -22,7 +22,7 @@ class AssetAggregatorTest extends TestCase
 
         $list = $aggregator->getAssetList();
 
-        $this->assertCount(7,$list,'Assert that it returns 8 assets.');
+        $this->assertCount(8,$list,'Assert that it returns 8 assets.');
 
         $score = 0;
         foreach ($list as $i => $item) {
