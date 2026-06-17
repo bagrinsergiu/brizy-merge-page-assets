@@ -1,5 +1,5 @@
 {
-  "name": "bagrinsergiu/brizy-merge-page-assets",
+  "name": "brizybuilder/brizy-merge-page-assets",
   "description": "Merge page assets compiled by Brizy compiler",
   "keywords": ["brizy", "brizy merge assets"],
   "type": "library",
